@@ -62,5 +62,9 @@ public class SoundEditor extends Application {
         // TODO code application logic here
         new SoundEditor();
     }
+    
+    public static SoundEditor getApplication(){
+        return (SoundEditor) Application.getApplication();
+    }
 
 }
