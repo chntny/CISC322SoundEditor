@@ -11,10 +11,14 @@ import javax.sound.sampled.*;
 public class SingleWaveFormPanel extends JPanel {
 
     long[] drawTheseNumbers;
+    long max;
 
     public SingleWaveFormPanel(long[] b) {
         super();
         drawTheseNumbers = b;
+        if (drawTheseNumbers!=null){
+            findAbsMax();
+        }
     }
 
     @Override
@@ -22,14 +26,32 @@ public class SingleWaveFormPanel extends JPanel {
         super.paintComponent(g);
         this.setBackground(Color.BLACK);
         g.setColor(Color.BLUE);
-        this.setSize(5000, 800);
-        int middleHeight = 400;
+        this.setSize(1000, 400);
+        int middleHeight = 200;
         //g.fillRect(23, 23, 20, 30);
+        
         if (drawTheseNumbers != null) {
-            for (int i = 0; i < drawTheseNumbers.length; i++) {
-                g.fillRect(i, middleHeight, 1, (int) (drawTheseNumbers[i] / 100));
+            int sectionLength = drawTheseNumbers.length/1000;
+            for (int i = 0; i < 1000; i++) {
+                int start = i*sectionLength;
+                int end = start + sectionLength;
+                g.fillRect(i, middleHeight, 1, 
+                        (int) (drawTheseNumbers[maxIndexSection(start,end)]*200/max)
+                );
             }
         }
+    }
+    
+    private int maxIndexSection(int start, int end){
+        int index=start;
+        long maxVal=0;
+        for (int i = start; i<end; i++){
+            if (Math.abs(drawTheseNumbers[i])> maxVal){
+                maxVal = drawTheseNumbers[i];
+                index = i;
+            }
+        }
+        return index;
     }
 
     void setDocument(SoundContents contents) {
@@ -37,6 +59,16 @@ public class SingleWaveFormPanel extends JPanel {
             drawTheseNumbers = null;
         } else {
             drawTheseNumbers = contents.getChannel(0);
+        }
+    }
+    
+    private void findAbsMax(){
+        max = 0;
+        for (long l:drawTheseNumbers){
+            max = Math.max(max, Math.abs(l));
+        }
+        if (max == 0){
+            max = 1;
         }
     }
 

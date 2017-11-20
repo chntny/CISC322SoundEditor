@@ -65,6 +65,7 @@ public class SoundDocument
         System.out.println("open");
         try {
             contents.open(AudioSystem.getAudioInputStream(in));
+            System.out.println("got AudioInputStream");
             window = new SingleWaveFormPanel(contents.sampleArray[0]);
             setChanged(false);
         } catch (UnsupportedAudioFileException ex) {

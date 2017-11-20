@@ -26,26 +26,20 @@ public class SoundContents {
             frameLength = (int) in.getFrameLength();
             frameSize = in.getFormat().getFrameSize();
             numChannels = in.getFormat().getChannels();
-//            if (frameSize != 2) {
-//                throw new IOException("Samples not 16 bit");
-//            }
+            System.out.println("Number of channels " + Integer.toString(numChannels));
+            System.out.println("FrameSize is "+Integer.toString(frameSize));
+            if (frameSize != 2*numChannels) {
+                throw new IOException("Samples not 16 bit");
+            }
             byte[] data = new byte[frameLength * frameSize];
             in.read(data);
             sampleArray = new long[numChannels][frameLength];
             int sampleIndex = 0;
-            long sample;
             for (int t = 0; t < data.length;) {
                 for (int channel = 0; channel < numChannels; channel++) {
-                    sample = 0;
-                    for (int b = 0; b < frameSize; b++) {
-                        if (b == 0) {
-                            sample += (long) (data[t++] & 0x00ff);
-                        } else {
-                            long s = (long) data[t++];
-                            s = s << 8*b;
-                            sample += s;
-                        }
-                    }
+                    int low = (int) data[t++];
+                    int high = (int) data[t++];
+                    int sample = getSixteenBitSample(high, low);
                     sampleArray[channel][sampleIndex] = sample;
                 }
                 sampleIndex++;
@@ -56,6 +50,12 @@ public class SoundContents {
         }
     }
 
+    private static int getSixteenBitSample(int high, int low) {
+        high = high << 8;
+        high += low & 0x00ff;
+        return high;
+    }
+    
     void save(OutputStream out) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

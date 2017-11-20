@@ -27,17 +27,20 @@ import javax.swing.JScrollPane;
  *
  * @author User
  */
-class MainPanel extends JPanel{
+public class MainPanel extends JPanel{
     
     private SingleWaveFormPanel mainArea;
     
     public MainPanel(){
         super();
         mainArea = new SingleWaveFormPanel(null);
-        JScrollPane sc = new JScrollPane(mainArea);
-        add(sc);
-        mainArea.setVisible(true);
         
+//        JScrollPane sc = new JScrollPane(mainArea);
+//        add(sc);
+//        mainArea.setVisible(true);
+//        
+        add(mainArea);
+        setVisible(true);
     }
     
     

@@ -20,7 +20,7 @@ import ca.queensu.cs.dal.edfmwk.menu.MenuElement;
 public class SoundEditor extends Application {
 
     private MenuDescriptor menu;
-    MainPanel mainPanel;
+    SingleWaveFormPanel mainPanel;
     private static String title = "Simple Sound File Editor";
 
     public MenuDescriptor getMainMenu() {
@@ -38,7 +38,7 @@ public class SoundEditor extends Application {
 
     public SoundEditor() {
         super(title);
-        mainPanel = new MainPanel();
+        mainPanel = new SingleWaveFormPanel(null);
         DocumentType fac = new SoundType();
         DocumentManager manager = getDocumentManager();
         if (manager != null){
@@ -51,6 +51,7 @@ public class SoundEditor extends Application {
 //        if (newAction != null){
 //            newAction.setAction(new NewAction(fac));
 //        }
+        mainPanel.repaint();
         setup(mainPanel, mainMenu);
         finishSetup();
     }
