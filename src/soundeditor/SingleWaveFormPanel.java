@@ -16,7 +16,7 @@ public class SingleWaveFormPanel extends JPanel {
     public SingleWaveFormPanel(long[] b) {
         super();
         drawTheseNumbers = b;
-        if (drawTheseNumbers!=null){
+        if (drawTheseNumbers != null) {
             findAbsMax();
         }
     }
@@ -29,25 +29,28 @@ public class SingleWaveFormPanel extends JPanel {
         this.setSize(1000, 400);
         int middleHeight = 200;
         //g.fillRect(23, 23, 20, 30);
-        
-        if (drawTheseNumbers != null) {
-            int sectionLength = drawTheseNumbers.length/1000;
+
+        if (drawTheseNumbers != null){
+            int sectionLength = drawTheseNumbers.length / 1000;
             for (int i = 0; i < 1000; i++) {
-                int start = i*sectionLength;
+                int start = i * sectionLength;
                 int end = start + sectionLength;
-                g.fillRect(i, middleHeight, 1, 
-                        (int) (drawTheseNumbers[maxIndexSection(start,end)]*200/max)
-                );
+                int length = (int) (drawTheseNumbers[maxIndexSection(start, end)] * 200 / max);
+                if (length >= 0) {
+                    g.fillRect(i, middleHeight, 1, length);
+                } else {
+                    g.fillRect(i,middleHeight + length, 1, -length);
+                }
             }
         }
     }
-    
-    private int maxIndexSection(int start, int end){
-        int index=start;
-        long maxVal=0;
-        for (int i = start; i<end; i++){
-            if (Math.abs(drawTheseNumbers[i])> maxVal){
-                maxVal = drawTheseNumbers[i];
+
+    private int maxIndexSection(int start, int end) {
+        int index = start;
+        long maxVal = 0;
+        for (int i = start; i < end; i++) {
+            if (Math.abs(drawTheseNumbers[i]) > maxVal) {
+                maxVal = Math.abs(drawTheseNumbers[i]);
                 index = i;
             }
         }
@@ -55,19 +58,19 @@ public class SingleWaveFormPanel extends JPanel {
     }
 
     void setDocument(SoundContents contents) {
-        if (contents.getChannels() == 0){
+        if (contents.getChannels() == 0) {
             drawTheseNumbers = null;
         } else {
             drawTheseNumbers = contents.getChannel(0);
         }
     }
-    
-    private void findAbsMax(){
+
+    private void findAbsMax() {
         max = 0;
-        for (long l:drawTheseNumbers){
+        for (long l : drawTheseNumbers) {
             max = Math.max(max, Math.abs(l));
         }
-        if (max == 0){
+        if (max == 0) {
             max = 1;
         }
     }

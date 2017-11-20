@@ -38,9 +38,16 @@ public class SoundContents {
             for (int t = 0; t < data.length;) {
                 for (int channel = 0; channel < numChannels; channel++) {
                     int low = (int) data[t++];
+                    //System.out.print("low: ");
+                    //System.out.println(low);
                     int high = (int) data[t++];
+                    //System.out.print("high: ");
+                    //System.out.println(high);
                     int sample = getSixteenBitSample(high, low);
+                    //System.out.print("sample: ");
+                    //System.out.println(sample);
                     sampleArray[channel][sampleIndex] = sample;
+                    //System.out.println(sampleArray[channel][sampleIndex]);
                 }
                 sampleIndex++;
             }
@@ -52,7 +59,7 @@ public class SoundContents {
 
     private static int getSixteenBitSample(int high, int low) {
         high = high << 8;
-        high += low & 0x00ff;
+        high = high | low;
         return high;
     }
     
