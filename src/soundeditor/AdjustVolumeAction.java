@@ -54,9 +54,20 @@ public class AdjustVolumeAction extends SoundAction {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
 //    
-
     @Override
     protected void changeSound(SoundContents con, int start, int end, int scale) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long[] tempArray = new long[end - start];
+        
+        for (int i = 0; i < (end - start); i++) {
+            tempArray[i] = tempArray[i] * scale;
+            if (tempArray[i] > 0xffff){
+                tempArray[i] = 0xffff;
+            }
+            if (tempArray[i] < -0xffff){
+                tempArray[i] = -0xffff;
+            }
+        }
+        con.replace(start, end, tempArray);
     }
+
 }

@@ -37,17 +37,22 @@ public class SoundDocument
 
     @Override
     public void insertUpdate(DocumentEvent de) {
-        setChanged();
+        System.out.println("insertUpdate");
+
+        setChanged(false);
     }
 
     @Override
     public void removeUpdate(DocumentEvent de) {
-        setChanged();
+        System.out.println("removeUpdate");
+
+        setChanged(false);
     }
 
     @Override
     public void changedUpdate(DocumentEvent de) {
-        setChanged();
+        System.out.println("changedUpdate");
+        setChanged(true);
     }
 
     @Override
@@ -56,7 +61,7 @@ public class SoundDocument
         setChanged(false);
     }
 
-    SoundContents getContents() {
+    public SoundContents getContents() {
         return contents;
     }
 
@@ -66,7 +71,7 @@ public class SoundDocument
         try {
             contents.open(AudioSystem.getAudioInputStream(in));
             System.out.println("got AudioInputStream");
-            window = new SingleWaveFormPanel(contents.sampleArray[0]);
+            window = new SingleWaveFormPanel(contents.getChannel(0));
             setChanged(false);
         } catch (UnsupportedAudioFileException ex) {
             Logger.getLogger(SoundDocument.class.getName()).log(Level.SEVERE, null, ex);

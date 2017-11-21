@@ -26,7 +26,7 @@ public class SoundContents {
     private int numChannels;
     private float frameRate;
     private boolean bigEndian;
-    long[][] sampleArray;
+    private long[][] sampleArray;
 
     void open(AudioInputStream in) throws IOException {
         try {
@@ -42,12 +42,12 @@ public class SoundContents {
             if (frameSize != 2 * numChannels) {
                 throw new IOException("Samples not 16 bit");
             }
-            if (bigEndian){
+            if (bigEndian) {
                 throw new IOException("Samples not little-Endian");
             }
             byte[] data = new byte[frameLength * frameSize];
             in.read(data);
-            printArray(data,20);
+//            printArray(data,20);
             sampleArray = new long[numChannels][frameLength];
             int sampleIndex = 0;
             for (int t = 0; t < data.length;) {
@@ -66,8 +66,8 @@ public class SoundContents {
                 }
                 sampleIndex++;
             }
-            printArray(sampleArray[0],10);
-            printArray(sampleArray[1],10);
+//            printArray(sampleArray[0],10);
+//            printArray(sampleArray[1],10);
         } catch (Exception e) {
             throw new IOException(e.getLocalizedMessage());
         }
@@ -79,11 +79,15 @@ public class SoundContents {
         s = s << 8;
         s = s | (low & 0xff);
         return s;
-        
+
     }
 
     public int getChannels() {
         return numChannels;
+    }
+
+    public long[][] getContents() {
+        return sampleArray;
     }
 
     public long[] getChannel(int c) {
@@ -95,7 +99,7 @@ public class SoundContents {
         frame[0] = (byte) (s & 0xff);
         s = s >> 8;
         frame[1] = (byte) (s & 0xff);
-        
+
 //        frame[1] = frame[1] | (i & 0x80);
 //        for (int i = 0; i < frame.length; i++) {
 //            frame[i] = (byte) (s & 0x00ff);
@@ -103,16 +107,16 @@ public class SoundContents {
 //        }
         return frame;
     }
-    
-    public static void printArray(byte[] array, int max){
-        for (int i=0; i<max; i++){
+
+    public static void printArray(byte[] array, int max) {
+        for (int i = 0; i < max; i++) {
             System.out.println(Byte.toString(array[i]));
         }
         System.out.println();
     }
-    
-    public static void printArray(long[] array, int max){
-        for (int i=0; i<max; i++){
+
+    public static void printArray(long[] array, int max) {
+        for (int i = 0; i < max; i++) {
             System.out.println(Long.toBinaryString(array[i]));
         }
         System.out.println();
@@ -138,8 +142,8 @@ public class SoundContents {
         System.out.println(format);
         byte[] invertedData = invertSampleArray();
         System.out.println("");
-        printArray(invertedData,20);
-        
+//        printArray(invertedData, 20);
+
         ByteArrayInputStream bAIS = new ByteArrayInputStream(invertedData);
 
 //        if (bAIS==null){
@@ -210,4 +214,35 @@ public class SoundContents {
         //AudioSystem.getAudioInputStream();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-}
+
+    public void replace(int start, int end, long[] givenArray) {
+        System.out.println("replace");
+        long[][] newSampleArray = new long[sampleArray.length][sampleArray[0].length - (end - start) + givenArray.length];
+        for (int c = 0; c < sampleArray.length; c++) {
+            int k = 0;
+            for (int i = 0; i < start;) {
+                newSampleArray[c][k++] = sampleArray[c][i++];
+            }
+            for (int i = 0; i < givenArray.length;) {
+                newSampleArray[c][k++] = givenArray[i++];
+            }
+            for (int i = end; i < sampleArray[0].length;) {
+                newSampleArray[c][k++] = sampleArray[c][i++];
+            }
+        }
+        sampleArray = newSampleArray;
+        frameLength = sampleArray[0].length;
+        
+    }
+
+//        for (int i = 0; i < newSampleArray.length; i++) {
+//            for (int j = 0; j < newSampleArray[0].length; j++) {
+//                if (start <= j && j < end) {
+//                    newSampleArray[i][j] = givenArray[j - start];
+//                } else {
+//                    newSampleArray[i][j] = sampleArray[i][j];
+//                }
+//            }
+//        }//end outter for
+//    sampleArray  = newSampleArray;
+}//end public void replace

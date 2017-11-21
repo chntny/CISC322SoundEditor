@@ -19,7 +19,8 @@ public class DeleteAction extends SoundAction {
 
     @Override
     protected void changeSound(SoundContents con, int start, int end, int scale) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("changeSound");
+        con.replace(start,end, new long[0]);
     }
     
 }

@@ -28,6 +28,7 @@ public class SingleWaveFormPanel extends JPanel {
         g.setColor(Color.BLUE);
         this.setSize(1000, 400);
         int middleHeight = 200;
+//        g.fillRect(
         //g.fillRect(23, 23, 20, 30);
 
         if (drawTheseNumbers != null){

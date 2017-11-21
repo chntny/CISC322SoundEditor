@@ -5,7 +5,12 @@
  */
 package soundeditor;
 
+import ca.queensu.cs.dal.edfmwk.Application;
 import ca.queensu.cs.dal.edfmwk.act.DefaultAction;
+import ca.queensu.cs.dal.edfmwk.win.CommonWindow;
+import ca.queensu.cs.dal.flex.log.Log;
+import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,4 +27,25 @@ public abstract class SoundAction extends DefaultAction {
     
     protected abstract void changeSound(SoundContents con, int start, int end, int scale);
     
+    @Override
+    public void actionPerformed(ActionEvent ae){
+        try{
+            Application app = Application.getApplication();
+            SoundDocument doc = (SoundDocument) app.getActiveDocument();
+            SoundContents con = doc.getContents();
+            int start = 
+                    Integer.parseInt(JOptionPane.showInputDialog(
+                            "Input Start Index"));
+            int end = 
+                    Integer.parseInt(JOptionPane.showInputDialog(
+                            "Input End Index"));
+            int scale = Integer.parseInt(JOptionPane.showInputDialog(
+                            "Input Scale Factor"));
+            changeSound(con,start,end,scale);
+            doc.changedUpdate(null);
+        }catch (Exception ex) {
+	    Log.error("Sound action error: "+ex.getLocalizedMessage());
+	}
+        
+    }
 }
