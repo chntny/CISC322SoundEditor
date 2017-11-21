@@ -94,6 +94,10 @@ public class SoundContents {
         return sampleArray[c];
     }
 
+    public double getFrameRate() {
+        return frameRate;
+    }
+
     private byte[] invertFrame(long s) {
         byte[] frame = new byte[2];
         frame[0] = (byte) (s & 0xff);
@@ -163,56 +167,6 @@ public class SoundContents {
             e.printStackTrace();
         }
 
-//        try{
-//            stream = AudioSystem.getAudioInputStream(bAIS);
-//        }catch(UnsupportedAudioFileException e){
-//            System.out.println("ck6");
-//            e.printStackTrace();
-//        }catch (IOException e) {
-//            System.out.println("ck7");
-//            e.printStackTrace();
-//        }
-//        System.out.println("ck7");
-        //(1) https://stackoverflow.com/questions/10991391/saving-audio-byte-to-a-wav-file
-//        InputStream b_in = new ByteArrayInputStream(invertedData);
-//        try{
-//        DataOutputStream dos = new DataOutputStream(new FileOutputStream("C:\\filename.bin"));
-//        dos.write(invertedData);
-//        AudioFormat format = new AudioFormat(frameRate, 8*frameSize, numChannels, true, false);
-//        AudioInputStream stream = new AudioInputStream(b_in, format,invertedData.length);
-//        File file = new File("C:\\file.wav");
-//        AudioSystem.write(stream, Type.WAVE, file);
-//        }catch(Exception e){
-//            System.out.println("Exception in save (1)");
-//        }
-        // end (1)
-//        writeToFile(invertedData);
-//        System.out.println("ck4");
-//(2) https://stackoverflow.com/questions/17060346/how-to-convert-a-byte-array-into-an-audioinputstream-in-java
-//        ByteArrayInputStream bAIS = new ByteArrayInputStream(invertedData);
-//        
-//        AudioInputStream in=null;
-//        try {
-//            in = AudioSystem.getAudioInputStream(bAIS);
-//        } catch (UnsupportedAudioFileException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        //return in
-        //end (2)
-//        try{
-//            in = AudioSystem.getAudioInputStream(bAIS);
-//
-//            //out.write(invertedData);
-//        }
-//        catch(Exception e){
-//            System.out.println("Exception in save");
-//        }
-//        WaveFileWriter writer = new WaveFileWriter();
-//        writer.write(in, AudioFileFormat.Type.WAVE, out);
-        //AudioSystem.getAudioInputStream();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void replace(int start, int end, long[] givenArray) {
@@ -232,7 +186,7 @@ public class SoundContents {
         }
         sampleArray = newSampleArray;
         frameLength = sampleArray[0].length;
-        
+
     }
 
 //        for (int i = 0; i < newSampleArray.length; i++) {

@@ -17,35 +17,44 @@ import javax.swing.JOptionPane;
  * @author User
  */
 public abstract class SoundAction extends DefaultAction {
-    private SoundAction(){
+
+    private SoundAction() {
         super("Sound");
     }
     
-    protected SoundAction(String name){
+    protected SoundAction(String name) {
         super(name);
     }
     
-    protected abstract void changeSound(SoundContents con, int start, int end, int scale);
+    protected abstract void changeSound(SoundContents con, int start, int end, double scale);
     
     @Override
-    public void actionPerformed(ActionEvent ae){
-        try{
+    public void actionPerformed(ActionEvent ae) {
+        try {
             Application app = Application.getApplication();
             SoundDocument doc = (SoundDocument) app.getActiveDocument();
             SoundContents con = doc.getContents();
-            int start = 
-                    Integer.parseInt(JOptionPane.showInputDialog(
+            int start
+                    = Integer.parseInt(JOptionPane.showInputDialog(
                             "Input Start Index"));
-            int end = 
-                    Integer.parseInt(JOptionPane.showInputDialog(
+            int end
+                    = Integer.parseInt(JOptionPane.showInputDialog(
                             "Input End Index"));
-            int scale = Integer.parseInt(JOptionPane.showInputDialog(
-                            "Input Scale Factor"));
-            changeSound(con,start,end,scale);
+            double scale = Double.parseDouble(JOptionPane.showInputDialog(
+                    "Input Scale Factor"));
+            changeSound(con, start, end, scale);
             doc.changedUpdate(null);
-        }catch (Exception ex) {
-	    Log.error("Sound action error: "+ex.getLocalizedMessage());
-	}
+//            if (doc.getWindow() == null){
+//                System.out.println("window is null");
+//            }
+//            if (app.getActiveWindow() == null){
+//                System.out.println("active window is null");
+//            }
+//            app.getActiveWindow().setContentPane(doc.getWindow());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.error("Sound action error: " + ex.getLocalizedMessage());
+        }
         
     }
 }

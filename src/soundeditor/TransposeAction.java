@@ -20,7 +20,7 @@ public class TransposeAction extends SoundAction {
     }
 
     @Override
-    protected void changeSound(SoundContents con, int start, int end, int scale) {
+    protected void changeSound(SoundContents con, int start, int end, double scale) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

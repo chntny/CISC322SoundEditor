@@ -69,7 +69,7 @@ public class SoundType implements DocumentType {
                 menu.addElement(new MenuElement("Edit/Adjust Volume", new AdjustVolumeAction()));
                 menu.addElement(new MenuElement("Edit/Transpose", new TransposeAction()));
                 menu.addElement(new MenuElement("Edit/Delete", new DeleteAction()));
-                menu.addElement(new MenuElement("Edit/Remove Frequencies", new RemoveFrequenciesAction()));
+                menu.addElement(new MenuElement("Edit/Lowpass Filter", new LowPassAction()));
 
             } catch (Exception e) {
                 Log.internalError("Menu element error " + e.getLocalizedMessage());

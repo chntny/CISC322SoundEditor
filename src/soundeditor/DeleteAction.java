@@ -18,7 +18,7 @@ public class DeleteAction extends SoundAction {
     }
 
     @Override
-    protected void changeSound(SoundContents con, int start, int end, int scale) {
+    protected void changeSound(SoundContents con, int start, int end, double scale) {
         System.out.println("changeSound");
         con.replace(start,end, new long[0]);
     }

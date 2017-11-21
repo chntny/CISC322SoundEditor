@@ -55,16 +55,17 @@ public class AdjustVolumeAction extends SoundAction {
 //    }
 //    
     @Override
-    protected void changeSound(SoundContents con, int start, int end, int scale) {
+    protected void changeSound(SoundContents con, int start, int end, double scale) {
         long[] tempArray = new long[end - start];
-        
-        for (int i = 0; i < (end - start); i++) {
-            tempArray[i] = tempArray[i] * scale;
-            if (tempArray[i] > 0xffff){
-                tempArray[i] = 0xffff;
+        long[] contentArray = con.getChannel(0);
+        int k = -1;
+        for (int i = start; i < end ; i++) {
+            tempArray[++k] = (long) (contentArray[i] * scale);
+            if (tempArray[k] > 0xffff){
+                tempArray[k] = 0xffff;
             }
-            if (tempArray[i] < -0xffff){
-                tempArray[i] = -0xffff;
+            if (tempArray[k] < -0xffff){
+                tempArray[k] = -0xffff;
             }
         }
         con.replace(start, end, tempArray);

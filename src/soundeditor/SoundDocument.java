@@ -7,6 +7,9 @@ package soundeditor;
 
 import ca.queensu.cs.dal.edfmwk.doc.AbstractDocument;
 import ca.queensu.cs.dal.edfmwk.doc.DocumentType;
+import ca.queensu.cs.dal.edfmwk.doc.NoDocumentException;
+import ca.queensu.cs.dal.edfmwk.doc.NoFileException;
+import java.awt.Container;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,6 +31,11 @@ public class SoundDocument
 
     private SoundContents contents;
 
+    @Override
+    public Container getWindow(){
+        return window;
+    
+    }
     public SoundDocument(DocumentType dt) {
         super(dt);
         System.out.println("new");
@@ -39,21 +47,22 @@ public class SoundDocument
     public void insertUpdate(DocumentEvent de) {
         System.out.println("insertUpdate");
 
-        setChanged(false);
+        setChanged();
     }
 
     @Override
     public void removeUpdate(DocumentEvent de) {
         System.out.println("removeUpdate");
 
-        setChanged(false);
+        setChanged();
     }
 
     @Override
     public void changedUpdate(DocumentEvent de) {
         System.out.println("changedUpdate");
         window = new SingleWaveFormPanel(contents.getChannel(0));
-        setChanged(true);
+        window.setVisible(true);
+        setChanged();
     }
 
     @Override
