@@ -15,10 +15,7 @@ public class SingleWaveFormPanel extends JPanel {
 
     public SingleWaveFormPanel(long[] b) {
         super();
-        drawTheseNumbers = b;
-        if (drawTheseNumbers != null) {
-            findAbsMax();
-        }
+        drawTheseNumbers = b;   
     }
 
     @Override
@@ -32,6 +29,7 @@ public class SingleWaveFormPanel extends JPanel {
         //g.fillRect(23, 23, 20, 30);
 
         if (drawTheseNumbers != null){
+            findAbsMax();
             int sectionLength = drawTheseNumbers.length / 1000;
             for (int i = 0; i < 1000; i++) {
                 int start = i * sectionLength;

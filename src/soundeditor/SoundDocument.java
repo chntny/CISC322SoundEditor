@@ -52,6 +52,7 @@ public class SoundDocument
     @Override
     public void changedUpdate(DocumentEvent de) {
         System.out.println("changedUpdate");
+        window = new SingleWaveFormPanel(contents.getChannel(0));
         setChanged(true);
     }
 
