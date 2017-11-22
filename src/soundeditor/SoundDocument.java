@@ -33,17 +33,25 @@ public class SoundDocument
     private SoundContents contents;
 
     @Override
-    public Container getWindow(){
+    public Container getWindow() {
         return window;
-    
+
     }
+
     public SoundDocument(DocumentType dt) {
         super(dt);
         System.out.println("new");
         contents = new SoundContents();
-        SingleWaveFormPanel swfp = new SingleWaveFormPanel(contents.getChannel(0));
-        
+        SingleWaveFormPanel swfp;
+        if (contents.getContents() != null) {
+            swfp = new SingleWaveFormPanel(contents.getChannel(0));
+        } else {
+            swfp = new SingleWaveFormPanel(null);
+
+        }
         window = new JScrollPane(swfp);
+        window.setSize(1000, 400);
+
     }
 
     @Override
@@ -63,8 +71,6 @@ public class SoundDocument
     @Override
     public void changedUpdate(DocumentEvent de) {
         System.out.println("changedUpdate");
-        window = new SingleWaveFormPanel(contents.getChannel(0));
-        window.setVisible(true);
         setChanged();
     }
 
@@ -84,7 +90,7 @@ public class SoundDocument
         try {
             contents.open(AudioSystem.getAudioInputStream(in));
             System.out.println("got AudioInputStream");
-            window = new SingleWaveFormPanel(contents.getChannel(0));
+            window = new JScrollPane(new SingleWaveFormPanel(contents.getChannel(0)));
             setChanged(false);
         } catch (UnsupportedAudioFileException ex) {
             Logger.getLogger(SoundDocument.class.getName()).log(Level.SEVERE, null, ex);

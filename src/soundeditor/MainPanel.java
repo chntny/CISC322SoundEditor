@@ -44,7 +44,7 @@ public class MainPanel extends JPanel {
 	mainArea = new SingleWaveFormPanel(null);
 	JScrollPane sc = new JScrollPane(mainArea);
         // Add a border to the panel so we can see its boundaries
-        sc.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+//        sc.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         add(sc, BorderLayout.CENTER);
     } // end constructor MainPanel
 
