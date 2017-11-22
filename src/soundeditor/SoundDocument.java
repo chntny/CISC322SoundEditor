@@ -19,6 +19,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
 
 /**
@@ -40,7 +41,9 @@ public class SoundDocument
         super(dt);
         System.out.println("new");
         contents = new SoundContents();
-        window = new SingleWaveFormPanel(null);
+        SingleWaveFormPanel swfp = new SingleWaveFormPanel(contents.getChannel(0));
+        
+        window = new JScrollPane(swfp);
     }
 
     @Override
