@@ -17,10 +17,10 @@ import org.apache.commons.math3.transform.TransformType;
  *
  * @author User
  */
-public class TransposeAction extends SoundAction {
+public class FrequencyShiftAction extends SoundAction {
 
-    public TransposeAction() {
-        super("Transpose");
+    public FrequencyShiftAction() {
+        super("FrequencyShift");
     }
 
     @Override
@@ -59,39 +59,27 @@ public class TransposeAction extends SoundAction {
 
         FastFourierTransformer transformer = new FastFourierTransformer(DftNormalization.STANDARD);
         Complex[] fourierTransform = transformer.transform(padded, TransformType.FORWARD);
-        
-        Complex[] fourierNew = new Complex[fourierTransform.length];
-        
-        if (scale > 1){
-            for (int i = 0; i< fourierTransform.length; i++){
-                int j = (int) (i * scale);
-                if (j>= fourierNew.length){
-                    break;
-                }
-                fourierNew[j] = fourierTransform[i];
+
+        int shift = (int) (scale / frequency);
+        if (shift > 0) {
+            for (int i = fourierTransform.length; i >= shift; i--) {
+                fourierTransform[i] = fourierTransform[i - shift];
             }
-            for (int i = 0; i < fourierNew.length; i++){
-                if (fourierNew[i] == null){
-                    fourierNew[i] = new Complex(0);
-                }
+            for (int i = 0; i < shift; i++) {
+                fourierTransform[i] = new Complex(0);
             }
         }
-        
-        if (scale < 1){
-            for (int i = 0; i< fourierNew.length; i++){
-                int j = (int) (i * 1/scale);
-                if (j>= fourierTransform.length){
-                    break;
-                }
-                fourierNew[i] = fourierTransform[j];
+
+        if (shift < 0) {
+            shift = -shift;
+            for (int i = 0; i < fourierTransform.length - shift; i++) {
+                fourierTransform[i] = fourierTransform[i + shift];
             }
-            for (int i = 0; i < fourierNew.length; i++){
-                if (fourierNew[i] == null){
-                    fourierNew[i] = new Complex(0);
-                }
+            for (int i = fourierTransform.length - shift; i < fourierTransform.length; i++) {
+                fourierTransform[i] = new Complex(0);
             }
         }
-        
+
 //        if (diff > 0) {
 //            for (int i = fourierTransform.length - 1; i >= diff; i--) {
 //                fourierTransform[i] = fourierTransform[i - diff];
@@ -111,7 +99,6 @@ public class TransposeAction extends SoundAction {
 //                fourierTransform[i] = new Complex(0);
 //            }
 //        }
-
         //build the frequency domain array
 //        double[] frequencyDomain = new double[fourierTransform.length];
 //        for (int i = 0; i < frequencyDomain.length; i++) {
@@ -133,7 +120,7 @@ public class TransposeAction extends SoundAction {
 //            fourierTransform[i] = fourierTransform[i].multiply((double) keepPoints[i]);
 //        }
         //invert back to time domain
-        Complex[] reverseFourier = transformer.transform(fourierNew, TransformType.INVERSE);
+        Complex[] reverseFourier = transformer.transform(fourierTransform, TransformType.INVERSE);
 
         //get the real part of the reverse 
         double[] result = new double[data.length];

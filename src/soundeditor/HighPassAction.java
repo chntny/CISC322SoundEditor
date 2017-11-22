@@ -14,10 +14,10 @@ import org.apache.commons.math3.transform.*;
  *
  * @author User
  */
-public class LowPassAction extends SoundAction {
+public class HighPassAction extends SoundAction {
 
-    public LowPassAction() {
-        super("LowPass");
+    public HighPassAction() {
+        super("HighPass");
     }
 
     @Override
@@ -28,7 +28,7 @@ public class LowPassAction extends SoundAction {
         for (int i = start; i< end; i++){
             doubleCon[k++] = (double) sampleArray[i];
         }
-        double[] result = fourierLowPassFilter(doubleCon, scale, con.getFrameRate());
+        double[] result = fourierHighPassFilter(doubleCon, scale, con.getFrameRate());
         long[] resultLong = new long[end-start];
         for (int i = 0; i< result.length; i++){
             resultLong[i] = (long) result[i];
@@ -37,7 +37,7 @@ public class LowPassAction extends SoundAction {
         
     }
 
-    public double[] fourierLowPassFilter(double[] data, double lowPass, double frequency) {
+    public double[] fourierHighPassFilter(double[] data, double highPass, double frequency) {
         //data: input data, must be spaced equally in time.
         //lowPass: The cutoff frequency at which 
         //frequency: The frequency of the input data.
@@ -67,7 +67,7 @@ public class LowPassAction extends SoundAction {
         double[] keepPoints = new double[frequencyDomain.length];
         keepPoints[0] = 1;
         for (int i = 1; i < frequencyDomain.length; i++) {
-            if (frequencyDomain[i] < lowPass) {
+            if (frequencyDomain[i] > highPass) {
                 keepPoints[i] = 1;
             } else {
                 keepPoints[i] = 0;
