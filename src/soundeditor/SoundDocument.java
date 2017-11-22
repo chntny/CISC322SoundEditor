@@ -51,7 +51,7 @@ public class SoundDocument
         }
         window = new JScrollPane(swfp);
         window.setSize(1000, 400);
-
+        window.setVisible(true);
     }
 
     @Override
@@ -91,6 +91,7 @@ public class SoundDocument
             contents.open(AudioSystem.getAudioInputStream(in));
             System.out.println("got AudioInputStream");
             window = new JScrollPane(new SingleWaveFormPanel(contents.getChannel(0)));
+            window.setVisible(true);
             setChanged(false);
         } catch (UnsupportedAudioFileException ex) {
             Logger.getLogger(SoundDocument.class.getName()).log(Level.SEVERE, null, ex);

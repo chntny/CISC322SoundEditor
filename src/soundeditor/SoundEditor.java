@@ -39,6 +39,8 @@ public class SoundEditor extends Application {
     public SoundEditor() {
         super(title);
         mainPanel = new MainPanel();
+        mainPanel.setSize(1000,400);
+        mainPanel.setVisible(true);
         DocumentType fac = new SoundType();
         DocumentManager manager = getDocumentManager();
         if (manager != null){

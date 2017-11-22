@@ -36,10 +36,10 @@ public abstract class SoundAction extends DefaultAction {
             SoundContents con = doc.getContents();
             int start
                     = Integer.parseInt(JOptionPane.showInputDialog(
-                            "Input Start Index"));
+                            "Input Start Index [0,"+con.getChannel(0).length+")"));
             int end
                     = Integer.parseInt(JOptionPane.showInputDialog(
-                            "Input End Index"));
+                            "Input End Index ["+start+","+con.getChannel(0).length+")"));
             double scale = Double.parseDouble(JOptionPane.showInputDialog(
                     "Input Scale Factor"));
             changeSound(con, start, end, scale);
